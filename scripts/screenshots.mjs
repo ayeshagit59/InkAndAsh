@@ -1,4 +1,4 @@
-// Screenshots for review: hero intro moments, every section, mid-melt transitions, an open story, the resume viewer.
+// Screenshots for review: hero intro moments, every section, mid-melt transitions, an open story.
 // Needs the dev server:  npm run dev   then   CHROMIUM_PATH=... npm run shots
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
@@ -59,17 +59,6 @@ for (const [name, width, height] of [["desktop", 1440, 900], ["tablet", 768, 102
     await page.screenshot({ path: `${OUT}/${name}-story.png` });
     await page.keyboard.press("Escape");
     await page.waitForTimeout(600);
-    // resume viewer
-    if (name === "mobile") {
-      await page.getByRole("button", { name: "Open menu" }).click();
-      await page.waitForTimeout(300);
-      await page.locator(".nav-sheet .nav-resume").click();
-    } else {
-      await page.locator(".nav-links .nav-resume").click();
-    }
-    await page.waitForTimeout(1200);
-    await page.screenshot({ path: `${OUT}/${name}-resume.png` });
-    await page.keyboard.press("Escape");
   }
 
   const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));

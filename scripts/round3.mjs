@@ -123,31 +123,6 @@ for (const [name, width, height] of [["desktop", 1440, 900], ["mobile", 390, 844
   const links = await page.evaluate(() => [...document.querySelectorAll(".cover a")].map((a) => `${a.getAttribute("aria-label")} -> ${a.href} [${a.target} ${a.rel}]`));
   notes.push(...links.map((l) => `[${name}] ${l}`));
 
-  // ---- resume viewer ----
-  await scrollTo(page, 0);
-  await wait(page, 300);
-  if (name === "mobile") {
-    await page.getByRole("button", { name: "Open menu" }).click();
-    await wait(page, 300);
-    await page.locator(".nav-sheet .nav-resume").click();
-  } else await page.locator(".nav-links .nav-resume").click();
-  await wait(page, 1500);
-  await page.screenshot({ path: `${OUT}/${name}-12-resume.png` });
-  const rv = await page.evaluate(() => {
-    const img = document.querySelector(".resume-page");
-    const sc = document.querySelector(".resume-scroll");
-    return {
-      img: img && `${img.currentSrc.split("/").pop()} ${img.naturalWidth}px drawn ${Math.round(img.getBoundingClientRect().width)}px`,
-      scrolls: sc.scrollHeight > sc.clientHeight,
-      buttons: [...document.querySelectorAll(".resume-bar a, .resume-bar button")].map((b) => b.textContent.trim() || b.getAttribute("aria-label")),
-      focus: document.activeElement?.getAttribute("aria-label"),
-      embeds: document.querySelectorAll(".resume object, .resume embed, .resume iframe").length,
-    };
-  });
-  notes.push(`[${name}] resume: ${JSON.stringify(rv)}`);
-  await page.keyboard.press("Escape");
-  await wait(page, 500);
-
   // ---- Let's talk ----
   const talk = name === "mobile" ? page.locator(".nav-sheet .nav-cta") : page.locator(".nav-links .nav-cta");
   if (name === "mobile") {

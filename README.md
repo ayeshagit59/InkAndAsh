@@ -62,7 +62,6 @@ CHROMIUM_PATH=/path/to/chromium npm run shots   # saves into screenshots/
 | Section colours, shapes, giant words and the travelling cup | `SCENES` in `src/components/Atmosphere.tsx` |
 | Colour and spacing tokens | `src/styles/tokens.css` |
 | Cover clip (30 s) | `public/audio/cover-clip.mp4` |
-| Resume | `public/resume.pdf` |
 
 ## Deploying
 

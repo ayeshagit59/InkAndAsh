@@ -1,4 +1,4 @@
-// Smoke test: stories, resume viewer, art filters + colour drop, reels facade, clip + pill, reduced motion, contrast.
+// Smoke test: stories, art filters + colour drop, reels facade, clip + pill, reduced motion, contrast.
 import { chromium } from "playwright";
 const BASE = process.env.BASE_URL || "http://localhost:5173";
 const browser = await chromium.launch({ ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}), args: ["--autoplay-policy=no-user-gesture-required"] });
@@ -43,14 +43,6 @@ const counts = await page.evaluate(async () => {
   return out;
 });
 log("story word counts (200-320)", counts.join(", "));
-
-// resume
-await page.locator(".nav-links .nav-resume").click();
-await page.waitForTimeout(700);
-log("resume dialog + download link", (await page.getByRole("dialog", { name: "Resume" }).isVisible()) + " / " + (await page.locator(".resume a[download]").getAttribute("href")));
-await page.keyboard.press("Escape");
-await page.waitForTimeout(500);
-log("resume closed, focus on Resume button", await page.evaluate(() => document.activeElement.textContent.trim()));
 
 // art
 await page.locator("#art").scrollIntoViewIfNeeded();

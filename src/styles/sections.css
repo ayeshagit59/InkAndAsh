@@ -347,8 +347,7 @@
   margin: 0;
   padding: 0;
 }
-.nav-links ul a,
-.nav-resume {
+.nav-links ul a {
   position: relative;
   font-size: 15px;
   font-weight: 500;
@@ -703,8 +702,53 @@
   font-style: italic;
   color: var(--purple);
 }
+/* the GitHub card: a small, light extra under the caption, inside the same sticky block */
+.gh-wrap { margin-top: 28px; }
+.gh-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(100%, 300px);
+  padding: 14px 18px;
+  border-radius: calc(var(--radius) + 4px);
+  border: 1px solid rgb(142 27 176 / 0.2);
+  background: #fffaf3;
+  box-shadow: 0 14px 30px -20px rgb(142 27 176 / 0.45), 0 1px 3px rgb(59 42 32 / 0.06);
+  color: #3b2a20;
+  text-decoration: none;
+  transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+}
+.gh-icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  border-radius: 12px;
+  background: rgb(142 27 176 / 0.08);
+  color: var(--purple);
+}
+.gh-text { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+.gh-line { font-size: 14px; line-height: 1.35; color: #3b2a20; }
+.gh-link { font-size: 14px; font-weight: 600; color: var(--purple); }
+.gh-arrow { display: inline-block; transition: transform 0.3s var(--ease-out); }
+.gh-card:hover,
+.gh-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgb(142 27 176 / 0.55);
+  box-shadow: 0 18px 34px -20px rgb(142 27 176 / 0.6), 0 1px 3px rgb(59 42 32 / 0.06);
+}
+.gh-card:hover .gh-arrow,
+.gh-card:focus-visible .gh-arrow { transform: translate(3px, -1px); }
+.gh-card:focus-visible { outline: 3px solid var(--purple); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .gh-card, .gh-arrow { transition: border-color 0.3s, box-shadow 0.3s; }
+  .gh-card:hover, .gh-card:focus-visible, .gh-card:hover .gh-arrow, .gh-card:focus-visible .gh-arrow { transform: none; }
+}
+
 @media (max-width: 1024px) {
   .work-layout { grid-template-columns: 1fr; gap: 36px; }
+  .gh-wrap { width: min(100%, 320px); margin-top: 22px; }
+  .gh-card { width: 100%; }
   .work-caption { position: static; height: auto; align-items: center; text-align: center; }
   .work-lede { max-width: 18em; }
   .work-rule { margin: 20px auto 18px; }
@@ -1121,7 +1165,7 @@
   .sc-sec p { font-size: 15.5px; }
 }
 
-/* ================= thin scrollbars (story card, resume, lightbox) =================
+/* ================= thin scrollbars (story card, lightbox) =================
    A fixed 6px custom bar: setting ::-webkit-scrollbar's width keeps macOS from swapping in the
    overlay bar that thickens on hover. Same width in every state. Firefox gets the standard properties. */
 .thin-scroll {
@@ -1160,8 +1204,7 @@
   inset: 0;
   z-index: 80;
 }
-.drawer-scrim,
-.resume-scrim {
+.drawer-scrim {
   position: absolute;
   inset: 0;
   background: rgb(11 10 31 / 0.55);
@@ -2244,110 +2287,6 @@
   background: rgb(255 255 255 / 0.1);
 }
 
-/* ================= resume viewer ================= */
-.resume-root {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-.resume {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: min(980px, 100%);
-  height: min(94vh, 1200px);
-  border-radius: 22px;
-  overflow: hidden;
-  background: var(--paper);
-  color: var(--text);
-  box-shadow: 0 40px 100px -30px #000;
-}
-.resume-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px 14px 26px;
-  border-bottom: 1px solid rgb(59 42 32 / 0.12);
-}
-.resume-bar h2 {
-  margin: 0;
-  font-family: var(--font-script);
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 1;
-}
-.resume-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.btn-pill--quiet {
-  background: transparent;
-  color: var(--purple);
-  box-shadow: inset 0 0 0 1.5px rgb(142 27 176 / 0.45);
-}
-.btn-pill--quiet:hover {
-  background: var(--purple-soft);
-}
-.resume-scroll {
-  flex: 1;
-  overflow: auto;
-  overscroll-behavior: contain;
-  padding: 24px;
-  background: #e9e4dc;
-}
-.resume-scroll:focus-visible {
-  outline: 3px solid var(--purple);
-  outline-offset: -3px;
-}
-.resume-actions .btn-pill { white-space: nowrap; }
-.resume-zoom {
-  display: block;
-  width: 100%;
-  max-width: 940px;
-  margin: 0 auto;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: zoom-in;
-}
-.resume-zoom[aria-pressed="true"] {
-  width: 220%;
-  max-width: none;
-  cursor: zoom-out;
-}
-.resume-zoom:focus-visible {
-  outline: 3px solid var(--purple);
-  outline-offset: 2px;
-}
-.resume-blocked {
-  margin: 0;
-  padding: 10px 20px;
-  font-size: 13px;
-  font-weight: 600;
-  background: var(--purple-soft);
-  color: var(--purple-deep);
-}
-.resume-hint {
-  margin: 10px 0 0;
-  text-align: center;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.resume-page + .resume-page { margin-top: 16px; }
-.resume-page {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 auto;
-  background: #fff;
-  box-shadow: 0 10px 30px -12px rgb(40 20 50 / 0.35);
-}
-
 /* ================= brush cursor ================= */
 .brush-canvas {
   position: fixed;
@@ -2407,12 +2346,4 @@
   .footer-base { flex-direction: column; }
   .mini { right: 12px; bottom: 12px; }
   .mini-text { display: none; }
-  .resume-root { padding: 0; }
-  .resume { height: 100%; border-radius: 0; }
-  .resume-bar { padding: 10px 10px 10px 16px; }
-  .resume-bar h2 { font-size: 28px; }
-  .resume-actions { gap: 6px; }
-  .resume-actions .btn-pill { padding: 9px 12px; font-size: 13px; gap: 6px; }
-  .resume-actions .btn-pill svg { display: none; }
-  .resume-scroll { padding: 12px 0; }
 }

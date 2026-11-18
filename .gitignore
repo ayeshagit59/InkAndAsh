@@ -9,3 +9,6 @@ PLAN.md
 upload-to-github
 .env*
 .vercel
+
+# the removed resume feature (files kept locally, never pushed or deployed)
+archive/
