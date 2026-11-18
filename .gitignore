@@ -2,3 +2,10 @@ node_modules
 dist
 screenshots
 .DS_Store
+
+.claude
+PLAN.md
+*.tsbuildinfo
+upload-to-github
+.env*
+.vercel
