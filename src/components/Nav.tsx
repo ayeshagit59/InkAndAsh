@@ -6,7 +6,7 @@ import { CoffeeCup } from "./Props";
 // sections painted in light paper tones get a light nav
 const LIGHT = new Set(["work", "art"]);
 
-export function Nav({ onResume }: { onResume: () => void }) {
+export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("home");
@@ -64,21 +64,7 @@ export function Nav({ onResume }: { onResume: () => void }) {
       ))}
     </ul>
   );
-  const actions = (
-    <>
-      <button
-        type="button"
-        className="nav-resume"
-        onClick={() => {
-          setOpen(false);
-          onResume();
-        }}
-      >
-        Resume
-      </button>
-      <LetsTalk />
-    </>
-  );
+  const actions = <LetsTalk />;
 
   return (
     <header className={`nav${scrolled ? " nav--scrolled" : ""}${open ? " nav--open" : ""}${LIGHT.has(active) && !open ? " nav--light" : ""}`}>

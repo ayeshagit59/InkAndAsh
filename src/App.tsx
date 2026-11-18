@@ -1,5 +1,5 @@
 import { MotionConfig } from "framer-motion";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { About } from "./components/About";
 import { ArtTeaser } from "./components/ArtTeaser";
 import { Atmosphere, PageCanvas } from "./components/Atmosphere";
@@ -11,7 +11,6 @@ import { MiniPlayer } from "./components/MiniPlayer";
 import { MusicCoffee } from "./components/MusicCoffee";
 import { Nav } from "./components/Nav";
 import { PlayerProvider } from "./components/player";
-import { ResumeViewer } from "./components/ResumeViewer";
 import { SelectedWork } from "./components/SelectedWork";
 
 // Hash routing, so it works on any static host and inside the sandboxed preview: "#/gallery" is the gallery,
@@ -29,8 +28,6 @@ function useRoute() {
 }
 
 export function App() {
-  const [resumeOpen, setResumeOpen] = useState(false);
-  const closeResume = useCallback(() => setResumeOpen(false), []);
   const route = useRoute();
   const prev = useRef(route);
 
@@ -56,7 +53,7 @@ export function App() {
             <a className="skip-link" href="#about">
               Skip to content
             </a>
-            <Nav onResume={() => setResumeOpen(true)} />
+            <Nav />
             <div className="page">
               <PageCanvas />
               <Atmosphere />
@@ -72,7 +69,6 @@ export function App() {
           </>
         )}
         <MiniPlayer />
-        <ResumeViewer open={resumeOpen} onClose={closeResume} />
         <BrushCursor />
       </PlayerProvider>
     </MotionConfig>

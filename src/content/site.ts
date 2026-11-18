@@ -5,9 +5,10 @@ export const site = {
   brand: "Ink&Ash",
   email: "ayeshasanjeeedasana@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/ayesha-ashraf-sultana",
+  // the small "Curious about the code?" card under the Work caption (the only GitHub link on the site)
+  githubUrl: "https://github.com/ayeshagit59",
   instagramUrl: "https://www.instagram.com/my_harmonic_palette",
   mediumUrl: "https://medium.com/@InkAndAsh",
-  resumeUrl: `${import.meta.env.BASE_URL}resume.pdf`,
   mediumBio: "Brushes, music and coffee fuel me.",
 };
 

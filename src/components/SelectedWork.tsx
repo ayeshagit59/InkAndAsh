@@ -1,6 +1,6 @@
 import { animate, motion, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { bookingGuardPrototypeUrl, stories, thoucentricModelUrl, workSummary } from "../content/site";
+import { bookingGuardPrototypeUrl, site, stories, thoucentricModelUrl, workSummary } from "../content/site";
 import { LAYOUTS, pieceInsets, piecePath } from "./jigsaw";
 import { Arrow } from "./Props";
 import { FadeUp } from "./Reveal";
@@ -167,6 +167,32 @@ function Puzzle({ onOpen }: { onOpen: (id: string, from: Origin) => void }) {
   );
 }
 
+/** A quiet extra under the caption: one link to her GitHub, revealed a beat after the caption. */
+function GitHubCard() {
+  const reduced = useReducedMotion();
+  return (
+    <motion.div
+      className="gh-wrap"
+      initial={reduced ? false : { opacity: 0, y: 10, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+    >
+      <a className="gh-card" href={site.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="Ayesha's GitHub profile (opens in a new tab)">
+        <svg className="gh-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5M13.4 4.5l-2.8 15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span className="gh-text">
+          <span className="gh-line">Curious about the code?</span>
+          <span className="gh-link">
+            Visit my GitHub <span className="gh-arrow">↗</span>
+          </span>
+        </span>
+      </a>
+    </motion.div>
+  );
+}
+
 export function SelectedWork() {
   const [open, setOpen] = useState<{ id: string; from: Origin } | null>(null);
   const story = stories.find((s) => s.id === open?.id) ?? null;
@@ -184,6 +210,7 @@ export function SelectedWork() {
               <p className="work-lede">
                 <em>Six stories</em> about ideas that became products, proposals and plans. Pick a piece that makes you <em>curious</em>.
               </p>
+              <GitHubCard />
             </FadeUp>
           </div>
 

@@ -110,36 +110,6 @@ for (const [name, width, height] of [["desktop", 1440, 900], ["mobile", 390, 844
     await p.screenshot({ path: `${OUT}/${name}-03-art-tap.png` });
   }
 
-  // ---- resume viewer ----
-  await to(p, 0);
-  await wait(p, 400);
-  if (name === "mobile") { await p.locator(".nav-burger").click(); await wait(p, 400); }
-  await p.locator(name === "mobile" ? ".nav-sheet .nav-resume" : ".nav-links .nav-resume").click();
-  await wait(p, 1500);
-  const rv = await p.evaluate(() => {
-    const img = document.querySelector(".resume-page"), sc = document.querySelector(".resume-scroll"), box = document.querySelector(".resume").getBoundingClientRect();
-    const links = [...document.querySelectorAll(".resume-actions a")].map((a) => `${a.textContent.trim()}: ${a.getAttribute("href")}${a.hasAttribute("download") ? " download=" + a.getAttribute("download") : ""}`);
-    return { src: img.currentSrc.split("/").pop(), natural: img.naturalWidth, shown: Math.round(img.getBoundingClientRect().width), fits: box.width <= innerWidth && box.height <= innerHeight, scrolls: sc.scrollHeight > sc.clientHeight, overflowX: sc.scrollWidth > sc.clientWidth + 1, links };
-  });
-  notes.push(`[${name}] resume viewer: ${JSON.stringify(rv)}`);
-  if (!/fa20c5fe/.test(rv.src) || !rv.natural || !rv.fits || (name === "desktop" && !rv.scrolls) || rv.overflowX) problems.push(`[${name}] resume viewer ${JSON.stringify(rv)}`);
-  await p.screenshot({ path: `${OUT}/${name}-04-resume.png` });
-  await p.locator(".resume-scroll").evaluate((s) => (s.scrollTop = s.scrollHeight / 2));
-  await wait(p, 300);
-  await p.screenshot({ path: `${OUT}/${name}-05-resume-scrolled.png` });
-  if (name === "mobile") {
-    await p.locator(".resume-zoom").click();
-    await wait(p, 600);
-    const z = await p.evaluate(() => { const sc = document.querySelector(".resume-scroll"); sc.scrollTop = 400; return [sc.scrollHeight > sc.clientHeight, sc.scrollTop, sc.scrollWidth > sc.clientWidth]; });
-    notes.push(`[mobile] resume zoomed in: scrolls down ${z[0]} (scrollTop ${z[1]}), scrolls sideways ${z[2]}`);
-    if (!z[0]) problems.push("[mobile] zoomed resume does not scroll");
-    await p.screenshot({ path: `${OUT}/${name}-06-resume-zoomed.png` });
-  }
-  const pdf = await p.evaluate(async () => { const r = await fetch("resume.pdf", { cache: "no-store" }); return [r.status, (await r.arrayBuffer()).byteLength]; });
-  notes.push(`[${name}] resume.pdf fetch: ${pdf}`);
-  if (pdf[0] !== 200 || pdf[1] !== 112105) problems.push(`[${name}] resume.pdf ${pdf}`);
-  await p.keyboard.press("Escape");
-
   // ---- the book ----
   await p.goto(BASE + "#/gallery");
   await wait(p, 1300);
