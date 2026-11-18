@@ -71,4 +71,4 @@ The site is fully static. Vercel runs `npm run build` and serves the `dist/` fol
 
 - Medium: the stories behind the paintings are linked from the gallery on the site
 - Instagram: [@my_harmonic_palette](https://www.instagram.com/my_harmonic_palette)
-- LinkedIn: linked from the site and my resume
+- LinkedIn: linked from the site
